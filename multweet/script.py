@@ -1,11 +1,43 @@
+import sys
+
 from pkg_resources import iter_entry_points
 
 from multweet.config import Configuration, find_configuration_file
+from multweet.logger import DEBUG, ERROR, INFO, log
 from multweet.plugins import PLUGINS
 
 
 def mtw():
-    pass
+    # Verify command line arg count.
+    if len(sys.argv) < 2:
+        log(ERROR, 'Must write a message on the command line.')
+        sys.exit(1)
+    # Read configuration.
+    log(INFO, 'Reading configuration.')
+    config = Configuration(find_configuration_file())
+    # Split tag and message body.
+    message = sys.argv[1:]
+    message = ' '.join(message)
+    tag_name, body = message.split(None, 1)
+    if tag_name.startswith('+'):
+        tag_name = tag_name[1:]
+        tag = config.tags[tag_name]
+    else:
+        tag = config.tags['DEFAULT']
+        body = message
+    # Make sure the tag posts to at least one account.
+    log(INFO, 'Using %r', tag)
+    if len(tag.accounts) == 0:
+        log(ERROR, 'Tag does not post to any accounts.')
+        sys.exit(1)
+    # Verify message body length.
+    log(INFO, 'Message body is %r', body)
+    if len(body) > 160:
+        log(ERROR, 'Body must be 160 or fewer characters in length.')
+        sys.exit(1)
+    # Post message.
+    for account in tag.accounts:
+        log(INFO, 'Posting to %r', account)
 
 
 def listplugins():
