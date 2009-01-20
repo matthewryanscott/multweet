@@ -3,7 +3,7 @@ import sys
 from pkg_resources import iter_entry_points
 
 from multweet.config import Configuration, find_configuration_file
-from multweet.logger import DEBUG, ERROR, INFO, log
+from multweet.logger import ERROR, INFO, log
 from multweet.plugins import PLUGINS
 
 
@@ -38,6 +38,10 @@ def mtw():
     # Post message.
     for account in tag.accounts:
         log(INFO, 'Posting to %r', account)
+        instance = account.plugin(account)
+        instance.post_message(body)
+    # Done.
+    log(INFO, 'Message posted.')
 
 
 def listplugins():
