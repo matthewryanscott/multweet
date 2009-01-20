@@ -28,8 +28,8 @@ class Configuration(object):
             if name.startswith('tag:'):
                 tag_name = name[len('tag:'):]
                 options = config[name]
-                include_spec = options.get('include', '*').strip()
-                exclude_spec = options.get('exclude', '*').strip()
+                include_spec = options.get('include', '').strip()
+                exclude_spec = options.get('exclude', '').strip()
                 accounts = set()
                 # First handle includes.
                 if include_spec == '*':
@@ -41,6 +41,8 @@ class Configuration(object):
                 if exclude_spec == '*':
                     accounts = set()
                 else:
+                    if include_spec == '':
+                        accounts = set(self.accounts.values())
                     for account_name in exclude_spec.split():
                         accounts.remove(self.accounts[account_name])
                 tag = Tag(tag_name, accounts)
