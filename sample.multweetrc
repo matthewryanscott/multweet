@@ -1,0 +1,30 @@
+[account:personal]
+plugin=twitter
+username=myusername
+password=mypassword
+
+[account:professional]
+plugin=twiki
+username=mylogin
+password=mypasscode
+baseuri=http://corporate.example.com
+edituri=http://corporate.example.com/cbin/edit/
+page=Mywiki/MicroBlog
+heading=Status updates for %s
+
+[tag:DEFAULT]
+# To prevent accidental posting in the wrong place, don't post anywhere
+# unless a tag is given.
+exclude = *
+
+[tag:per]
+# Explicitly specify personal microblog accounts.
+include = personal
+
+[tag:pro]
+# Explicitly specify the corporate wiki.
+include = professional
+
+[tag:all]
+# Post to all accounts.
+include = *
