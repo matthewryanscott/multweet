@@ -32,9 +32,11 @@ def mtw():
         sys.exit(1)
     # Verify message body length.
     log(INFO, 'Message body is %r', body)
-    if len(body) > 160:
-        log(ERROR, 'Body must be 160 or fewer characters in length.')
-        sys.exit(1)
+    for account in tag.accounts:
+        max_len = account.plugin.max_message_length
+        if max_len is not None and len(body) > max_len:
+            log(ERROR, 'Body must be %i or fewer characters.' % max_len)
+            sys.exit(1)
     # Post message.
     for account in tag.accounts:
         log(INFO, 'Posting to %r', account)
