@@ -1,9 +1,9 @@
-from logging import basicConfig, getLogger, StreamHandler, DEBUG, ERROR, INFO
+from logging import basicConfig, getLogger, StreamHandler, ERROR, INFO
 import sys
 
 
 basicConfig()
-logger = getLogger('multweet')
+logger = getLogger('MulTweet')
 logger.setLevel(INFO)
 
 
