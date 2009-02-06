@@ -15,9 +15,14 @@ def mtw():
     # Read configuration.
     log(INFO, 'Reading configuration.')
     config = Configuration(find_configuration_file())
+    # Read from stdin if desired; otherwise read from command line.
+    if sys.argv[1] == '-':
+        log(INFO, 'Reading message from stdin.  Use Ctrl+D when finished.')
+        message = sys.stdin.read().strip()
+    else:
+        message = sys.argv[1:]
+        message = ' '.join(message)
     # Split tag and message body.
-    message = sys.argv[1:]
-    message = ' '.join(message)
     tag_name, body = message.split(None, 1)
     if tag_name.startswith('+'):
         tag_name = tag_name[1:]
